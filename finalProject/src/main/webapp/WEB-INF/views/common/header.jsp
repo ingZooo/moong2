@@ -93,7 +93,7 @@ header nav ul li{
 </head>
 
 <body>
-<header>
+	<header>
         <nav>
             <nav class="navbar navbar-expand-sm" id="menubar">
                 <!-- Brand -->
@@ -114,39 +114,47 @@ header nav ul li{
                     <a class="nav-link" href="#">자유 게시판</a>
                   </li>
                 </ul>
-                <!--로그인 전-->
-                <!-- <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">        
-                 <ul class="navbar-nav">       
-                     <li class="nav-item">            
-                        <a class="nav-link" href="#">로그인</a>        
-                    </li>           
-                    <li class="nav-item">            
-                        <a class="nav-link" href="#">회원가입</a>
-                    </li>           
-                 </ul>    
-                </div> -->
-
-                <!--로그인 후 -->
-                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">        
-                    <ul class="navbar-nav">       
-                        <li class="nav-item">            
-                            <a class="nav-link" href="#" style="pointer-events: none;">XXX님 환영합니다</a>     
-                       </li>            
-                       <li class="nav-item">  
-                            <!-- 체크할 메세지 or 알람이 있다면 fa-check 표시-->          
-                            <a class="nav-link" href="#"> <i class="fa-solid fa-check" style="color:red;">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림 </i>  </a>
-                       </li>
-                        <li class="nav-item">            
-                            <a class="nav-link" href="#"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
-                       </li>
-                       <li class="nav-item">            
-                        <a class="nav-link" href="myPageMain.me">마이페이지</a>
-                   </li> 
-                   <li class="nav-item">            
-                        <a class="nav-link" href="#">로그아웃</a>
-                   </li>          
-                    </ul>    
-                </div>
+         
+                 
+                <c:choose>
+                	<c:when test="${empty loginUser }">
+		                <!--로그인 전-->
+		                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">        
+		                 <ul class="navbar-nav">       
+		                     <li class="nav-item">            
+		                        <a class="nav-link" href="login.me">로그인</a>        
+		                    </li>           
+		                    <li class="nav-item">            
+		                        <a class="nav-link" href="enrollForm.me">회원가입</a>
+		                    </li>           
+		                 </ul>    
+		                </div>
+                	</c:when>
+                	<c:otherwise>
+		                <!--로그인 후 -->
+		                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">        
+		                    <ul class="navbar-nav">      
+		                     
+		                        <li class="nav-item">            
+		                            <a class="nav-link" href="#" style="pointer-events: none;">${loginUser.userName }님 환영합니다</a>     
+		                       </li>            
+		                       <li class="nav-item">  
+		                            <!-- 체크할 메세지 or 알람이 있다면 fa-check 표시-->          
+		                            <a class="nav-link" href="#"> <i class="fa-solid fa-check" style="color:red;">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림 </i>  </a>
+		                       </li>
+		                        <li class="nav-item">            
+		                            <a class="nav-link" href="#"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
+		                       </li>
+		                       <li class="nav-item">            
+		                        <a class="nav-link" href="myPageMain.me">마이페이지</a>
+		                   </li> 
+		                   <li class="nav-item">            
+		                        <a class="nav-link" href="logout.me">로그아웃</a>
+		                   </li>          
+		                    </ul>    
+		                </div>
+                	</c:otherwise>
+                </c:choose>
         </nav>
     </header>
 </body>

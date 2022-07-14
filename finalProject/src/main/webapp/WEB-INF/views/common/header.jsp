@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="${path}/resources/js/jquery.fullpage.min.js"></script>
     
+    
+    
     <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
@@ -114,6 +116,7 @@ header nav ul li{
                     <a class="nav-link" href="#">자유 게시판</a>
                   </li>
                 </ul>
+
          
                  
                 <c:choose>
@@ -155,6 +158,7 @@ header nav ul li{
 		                </div>
                 	</c:otherwise>
                 </c:choose>
+
         </nav>
     </header>
 </body>

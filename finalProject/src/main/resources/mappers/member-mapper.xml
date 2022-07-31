@@ -16,12 +16,29 @@
 		<result column="BIRTH" property="birth"/>
 		<result column="ENROLL_DATE" property="enrollDate"/>
 		<result column="MODIFIY_DATE" property="modifyDate"/>
+		<result column="APPROVAL" property="approval"/>
 		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	
+	<resultMap type="student" id="studentResultSet">
+		<result column="USER_NO" property="userNo"/>
+		<result column="YEAR" property="year"/>
+		<result column="KO" property="ko"/>
+		<result column="MATH" property="math"/>
+		<result column="ENG" property="eng"/>
+	</resultMap>
+	
+	<resultMap type="teacher" id="teacherResultSet">
+	<result column="USER_NO" property="userNo"/>
+	<result column="USER" property="userNo"/>
+	<result column="USER_NO" property="userNo"/>
+	<result column="USER_NO" property="userNo"/>
 	</resultMap>
 	
 	<!-- 로그인 -->
 	<select id="loginMember" resultMap="memberResultSet">
-		SELECT USER_NO
+		SELECT   USER_NO
 				,STUDENT
 				,TEACHER
 				,USER_ID
@@ -32,6 +49,7 @@
 				,BIRTH
 				,ENROLL_DATE
 				,MODIFY_DATE
+				,APPROVAL
 				,STATUS
 			FROM MEMBER
 			WHERE USER_ID = #{userId}
@@ -48,6 +66,8 @@
 						GENDER,
 						EMAIL,
 						BIRTH,
+						TEACHER,
+						STUDENT,
 						STATUS
 					)
 				VALUES(
@@ -58,14 +78,61 @@
 					#{gender},
 					#{email},
 					#{birth},
+					'N',
+					'N',
 					'Y'
 				)
 	</insert>
 
 	<!-- 아이디 중복 체크 -->
-<!-- 	<select id="idOk" resultType="_int"> -->
-<!-- 		SELECT COUNT(*) -->
-<!-- 	  	FROM MEMBER -->
-<!-- 	  	WHERE USER_ID = #{userId} -->
-<!-- 	</select> -->
+	<select id="idOk" resultType="_int">
+		SELECT COUNT(*)
+	  	FROM MEMBER
+	  	WHERE USER_ID = #{userId}
+	</select>
+
+	<!-- 아이디 찾기 -->
+	<select id="selectFindId" resultMap="memberResultSet">
+		SELECT USER_ID
+		FROM MEMBER
+		WHERE USER_NAME = #{userName}
+		AND EMAIL = #{email}
+		AND STATUS = 'Y'
+	</select>
+	
+	<!-- 비밀번호 찾기(일치하는 데이터가 있는지 확인) -->
+	<select id="findPwdCheck" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE USER_ID = #{userId}
+		AND EMAIL = #{email}
+		AND STATUS = 'Y'
+	</select>
+
+	<!-- 비밀번호 찾기(임시비밀번호로 변경) -->
+	<update id="findPwd">
+		UPDATE MEMBER
+		SET USER_PWD = #{userPwd}
+		WHERE USER_ID = #{userId}
+		AND EMAIL = #{email}
+		AND STATUS = 'Y'
+	</update>
+
+
+<!-- 로그인 학생정보 받아오기 -->
+<select id="loginStudentInfo" resultMap="studentResultSet">
+	SELECT YEAR,KO,MATH,ENG
+	FROM STUDENT
+	WHERE USER_NO = #{userNo}
+</select>
+
+<!-- 로그인 선생정보 받아오기 -->
+<select id="loginTeacherInfo" resultMap="teacherResultSet">
+	SELECT SELF_INTRODUCTION,SCHOOL_INFO,RATING
+	FROM TEACHER
+	WHERE USER_NO = #{userNo}
+</select>
+	
+	
+	
 </mapper>

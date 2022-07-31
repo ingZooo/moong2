@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,6 +103,20 @@
         width: 600px;
     }
     
+    #lessonTitle{
+    	background-color:rgb(49, 48, 47);
+    	color : white;
+    }
+    #lessonTitle th{
+        color : rgb(248, 238, 225);
+    
+    }
+    
+    
+    a {
+  		text-decoration: none;
+	}
+    
 </style>
 </head>
 <body>
@@ -108,44 +124,59 @@
 	<jsp:include page="../common/header.jsp"/>
 	<jsp:include page="../common/myPageNavi.jsp"/>
 	    <div class="outer">
-    <br><br>
+    <br><br><br><br>
 	 <h4 align="center"><b>과외 목록</b></h4>
 	 <br><br>
         <table class="table table-bordered table-sm" id="lessonListTable">
-            <thead align="center">
+            <thead align="center" id="lessonTitle">
                 <tr>
-                    <th style="width:10% ;">No</th>
-                    <th style="width:20% ;">과목</th>
+                    <th style="width:15% ;">과목</th>
                     <th style="width:20% ;">선생님</th>
+                    <th style="width:45% ;">과외 기간</th>
                     <th style="width:10% ;">상태</th>
+                    <th style="width:10% ;">종료버튼</th>
                 </tr>
             </thead>
             <tbody align="center">
-                <tr>
-                    <td>1</td>
-                    <td>영어</td>
-                    <td>김영어 선생님</td>
-                    <td>진행중</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>수학</td>
-                    <td>김수학 선생님</td>
-                    <td>완료</td>
-                </tr>
+                <c:forEach var="l" items="${list }">
+                	<tr align="center">
+                		<c:if test="${l.subject eq 'KO' }">
+                		<td>국어</td>
+                		</c:if>
+                		<c:if test="${l.subject eq 'MA' }">
+                		<td>수학</td>
+                		</c:if>
+                		<c:if test="${l.subject eq 'ENG' }">
+                		<td>영어</td>
+                		</c:if>
+                		 
+                		<c:if test="${loginUser.teacher eq 'N' }">	
+                		<td>${l.userName } 선생님</td>
+                		</c:if>
+                		<c:if test="${loginUser.teacher eq 'Y' }">
+                		<td>${l.userName }</td>
+                		</c:if>
+                		<td>${l.startDate} ~ ${l.endDate }</td>
+                		<c:choose>
+                			<c:when test="${l.status eq 'Y' }">
+                				<td>진행중</td>
+                			</c:when>
+                			<c:otherwise>
+                				<td>종료</td>
+                			</c:otherwise>
+                		</c:choose>
+                		<c:if test="${empty l.endDate  }">
+                			<td><a class="btn moong-yellow" href="lessonEnd.me?no=${l.leNo }">종료 버튼</a></td>
+                		</c:if>
+
+                	</tr>
+                </c:forEach>
+
             </tbody>
 
         </table>
 		
-        <!--페이징-->
-        <br><br>	
-        <div class="paging-area" align="center">
-            <button>이전</button>
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>다음</button>
-        </div>
+        
     </div>
  
 

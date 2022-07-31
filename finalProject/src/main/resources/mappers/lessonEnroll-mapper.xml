@@ -18,13 +18,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result column="LE_ORIGINNAME" property="leOriginname"/>
 	<result column="LE_CHANGENAME" property="leChangename"/>
 	<result column="STATUS" property="status"/>
+	
+	<result column="USER_NAME" property="userName"/>
+	<result column="GENDER" property="gender"/>
+	<result column="RATING" property="rating"/>
+	
 </resultMap>
+
+ <resultMap type="districts" id="districtsResultSet">
+ 	<result column="D_NO" property="dno"/>
+ 	<result column="AREA" property="area"/>
+ </resultMap>
+
+
+
+<select id="selectDistrictsList" resultMap="districtsResultSet">
+	SELECT D_NO,AREA
+	FROM DISTRICTS
+</select>
+
+
 
 <select id="selectList" resultMap="lessonEnrollResultSet">
 	SELECT 
 SUBJECT, FEE, CAREER, STATUS,T_YEAR,LE_NO
 FROM LESSON_ENROLL
 WHERE USER_NO = #{userNo}
+AND STATUS = 'Y'
 </select>
 
 
@@ -68,12 +88,144 @@ AND STATUS ='Y'
 </insert>
 
 <select id="selectLesson" resultMap="lessonEnrollResultSet"  parameterType="int">
-SELECT LE_NO,M.USER_NAME,SUBJECT,FEE,LE_STYLE,T_YEAR,AREA,CAREER,LE_DAY,TEACHINGSTYLE,LE_ORIGINNAME,LE_CHANGENAME
+SELECT LE_NO,L.USER_NO,M.USER_NAME,SUBJECT,FEE,LE_STYLE,T_YEAR,AREA,CAREER,LE_DAY,TEACHINGSTYLE,LE_ORIGINNAME,LE_CHANGENAME
 FROM LESSON_ENROLL L
 JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
 WHERE L.STATUS = 'Y'
 AND M.STATUS = 'Y'
-AND L.USER_NO =#{userNo}
+AND LE_NO =#{leNo}
 
 </select>
+
+<select id="selectAllLesson" resultMap="lessonEnrollResultSet">
+SELECT USER_NAME,GENDER,RATING,SUBJECT,T_YEAR,LE_NO
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (M.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'Y'
+ORDER BY T.RATING
+</select>
+
+<select id="selectAllLessonCount" resultType="_int">
+SELECT COUNT(*)
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (M.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'Y'
+ORDER BY T.RATING
+</select>
+
+
+<update id="deleteLesson" parameterType="lessonEnroll">
+UPDATE LESSON_ENROLL
+SET STATUS = 'N'
+WHERE LE_NO =#{leNo}
+
+</update>
+
+<update id="updateLesson" parameterType="lessonEnroll">
+UPDATE LESSON_ENROLL
+SET SUBJECT = #{subject},
+	FEE = #{fee},
+	LE_STYLE = #{leStyle},
+	T_YEAR = #{tyear},
+	AREA = #{area},
+	CAREER = #{career},
+	LE_DAY = #{leDay},
+	TEACHINGSTYLE =#{teachingStyle},
+	LE_ORIGINNAME =#{leOriginname},
+	LE_CHANGENAME = #{leChangename}
+WHERE LE_NO =#{leNo}
+</update>
+
+<select id="selectSearchAllLesson" resultMap="lessonEnrollResultSet">
+SELECT USER_NAME,GENDER,RATING,SUBJECT,T_YEAR,LE_NO
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (M.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'Y'
+AND ${searchCat} LIKE '%'||#{searchText}||'%'
+ORDER BY T.RATING
+</select>
+ 
+ 
+ 
+ <resultMap type="lessonReview" id="lessonReviewResultSet">
+ 	<result column="RENO" property="reNo"/>
+ 	<result column="REF_LENO" property="refLeno"/>
+ 	<result column="RE_UNO" property="reUno"/>
+ 	<result column="RE_UNAME" property="reUname"/>
+ 	<result column="RE_TEXT" property="reText"/>
+ 	<result column="CREATE_DATE" property="createDate"/>
+ 	<result column="STATUS" property="status"/>
+ </resultMap>
+
+<resultMap type="lessonn" id="lessonResultSet">
+	<result column="L_NO" property="lNo"/>
+	<result column="STUDENT_NO" property="studentNo"/>
+	<result column="TEACHER_NO" property="teacherNo"/>
+	<result column="SUBJECT" property="subject"/>
+	<result column="START_DATE" property="startDate"/>
+	<result column="END_DATE" property="endDate"/>
+	<result column="STATUS" property="status"/>
+</resultMap>
+
+<!-- 후기 등록 -->
+<insert id="insertReview" parameterType="lessonReview">
+	INSERT INTO LESSON_REVIEW(RENO, 
+							  REF_LENO, 
+							  RE_UNO, 
+							  RE_UNAME, 
+							  RE_TEXT, 
+							  CREATE_DATE, 
+							  STATUS
+							  )
+	                   VALUES(SEQ_RENO.NEXTVAL, 
+	                          #{refLeno}, 
+	                          #{reUno}, 
+	                          #{reUname}, 
+	                          #{reText}, 
+	                          SYSDATE, 
+	                          'Y'
+	                          )
+</insert>
+
+<!-- 후기 목록 -->
+<select id="reviewList" resultMap="lessonReviewResultSet">
+	SELECT REF_LENO, RE_UNO, RE_UNAME, RE_TEXT, CREATE_DATE
+	FROM LESSON_REVIEW LR
+	WHERE REF_LENO = #{refLeNo}
+	AND LR.STATUS = 'Y'
+	ORDER BY CREATE_DATE DESC
+</select>
+
+<!-- 선생님 과목의 과외학생인지? -->
+<select id="countStudent" resultType="_int">
+	SELECT COUNT(*)
+	FROM LESSON
+	WHERE STUDENT_NO = #{studentNo}
+	AND SUBJECT = #{subject}
+	AND TEACHER_NO = #{teacherNo}
+	AND STATUS ='N'
+</select>
+
+<!-- 후기를 이미 한 번 썼는지? -->
+<select id="isWriteReview" resultMap="lessonReviewResultSet">
+	SELECT *
+	FROM LESSON_REVIEW
+	WHERE REF_LENO = #{refLeno}
+	AND RE_UNAME = #{reUname}
+</select>
+
+<!-- 후기 수정 -->
+<update id="modiReview" parameterType="lessonReview">
+	UPDATE LESSON_REVIEW
+	SET RE_TEXT = #{reText}
+	WHERE REF_LENO = #{refLeno}
+	AND RE_UNO = #{reUno}
+</update>
+
 </mapper>

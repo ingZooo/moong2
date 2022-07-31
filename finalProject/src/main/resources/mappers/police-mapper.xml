@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="policeMapper">
+
+	<resultMap type="police" id="policeResultSet">
+		<result column="P_NO" property="p_No"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="REASON" property="reason"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="SOLUTION_NO" property="solutionNo"/>
+	</resultMap>
+	
+	<!-- 게시글 신고 -->
+	<insert id="addPolice" parameterType="police">
+		INSERT INTO POLICE(
+						  P_NO
+						 ,USER_NO
+						 ,REASON
+						 ,SOLUTION_NO
+						 )
+		VALUES(
+				SEQ_PNO.NEXTVAL
+				,#{userNo}
+				,#{reason}
+				,#{solutionNo}
+				)
+	</insert>
+	
+	<!-- 신고삭제 -->
+	<delete id="deletePolice">
+		DELETE
+		FROM POLICE
+		WHERE P_NO = #{p_No}	
+	</delete>
+	
+	<!-- 전체 신고수 -->
+	<select id="policeListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM POLICE
+	</select>
+	
+	<!-- 신고리스트 -->
+	<select id="policeList" resultMap="policeResultSet">
+		SELECT L.*, M.USER_ID AS "REPORTER", W.USER_ID AS "WRITER"
+		FROM 
+	    POLICE L
+	    JOIN MEMBER M
+	    ON L.USER_NO=M.USER_NO
+	    JOIN
+	        (SELECT P.P_NO, M.USER_ID
+	        FROM 
+	            POLICE P 
+	            JOIN SOLUTION S ON P.SOLUTION_NO=S.SOLUTION_NO
+	            JOIN MEMBER M ON S.USER_NO = M.USER_NO) W
+	    ON L.P_NO = W.P_NO
+	    ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<delete id="solDeletePolice">
+		DELETE
+		FROM POLICE
+		WHERE SOLUTION_NO = #{solutionNo}
+	</delete>
+	
+	<!-- 해당 user가 해당 게시물을 신고했는지 확인(0/1로 구분) -->
+	<select id="solPoliceCheck" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		FROM POLICE
+		WHERE SOLUTION_NO = #{solution_no} AND USER_NO = #{user_no}
+	</select>
+	
+</mapper>

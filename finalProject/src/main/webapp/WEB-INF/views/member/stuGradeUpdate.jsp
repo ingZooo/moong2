@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,7 +96,17 @@
         margin: auto;
         width: 600px;
     }
-
+	
+	#rc{
+	
+    	width: 400px;
+    	height: 500px;
+    	margin: auto;
+        margin-bottom: 10px;
+        /*공란색칠*/
+        background-color: orange;
+    	 
+    }
 
     
 </style>
@@ -104,7 +116,7 @@
 	<jsp:include page="../common/myPageNavi.jsp"/>
 	
 	<div class="outer" align="center"> 
- 	<br><br>
+ 	<br><br><br><br>
 	 <h4 align="center"><b>성적 수정</b></h4>
 	 <br><br>
     <p style="border: 1px solid black;  width: 500px;">
@@ -112,7 +124,6 @@
         * 매칭 중인 과외가 있는 경우 수정할 수 없습니다.
     </p>
 
-    <form action="stuGradeUpdate.me">
     <table id="gradeUpdateTable">
     	<thead align="center">
 	    	<tr>
@@ -124,62 +135,34 @@
 	        <tr>
 	            <td  align="center">국어</td>
 	            <td>
-	                <select name="kor" id="kor">
-	                    <option value="one">1등급</option>
-	                    <option value="two">2등급</option>
-	                    <option value="three">3등급</option>
-	                    <option value="four">4등급</option>
-	                    <option value="five">5등급</option>
-	                    <option value="six">6등급</option>
-	                    <option value="sev">7등급</option>
-	                    <option value="eig">8등급</option>
-	                    <option value="nine">9등급</option>
-	                </select>
+	               ${student.ko }등급
 	            </td>
 	        </tr>
 	        <tr>
 	            <td  align="center">수학</td>
 	            <td>
-	                <select name="math" id="math">
-	                    <option value="one">1등급</option>
-	                    <option value="two">2등급</option>
-	                    <option value="three">3등급</option>
-	                    <option value="four">4등급</option>
-	                    <option value="five">5등급</option>
-	                    <option value="six">6등급</option>
-	                    <option value="sev">7등급</option>
-	                    <option value="eig">8등급</option>
-	                    <option value="nine">9등급</option>
-	                </select>
+	                ${student.math }등급
 	            </td>
 	        </tr>
 	        <tr>
 	            <td  align="center">영어</td>
 	            <td>
-	                <select name="eng" id="eng">
-	                    <option value="one">1등급</option>
-	                    <option value="two">2등급</option>
-	                    <option value="three">3등급</option>
-	                    <option value="four">4등급</option>
-	                    <option value="five">5등급</option>
-	                    <option value="six">6등급</option>
-	                    <option value="sev">7등급</option>
-	                    <option value="eig">8등급</option>
-	                    <option value="nine">9등급</option>
-	                </select>
+	                ${student.eng }등급
 	            </td>
 	        </tr>
 	        <tr>
 	            <td  align="center">성적표</td>
-	            <td><input type="file"></td>
+	            <td>${reportCard.rcOriginName }</td>
 	        </tr>
 		</tbody>
 
     </table>
+    <br>
+    <div id="rc"><img style="height:500px; width:400px;" src="${reportCard.rcSysName }"></div>
     <br><br>
 
-    <button type="submit">수정하기</button> <button type="reset">취소</button>
-    </form>
+		<button onclick="location.href='stuGradeUpdateForm.me'" style="float: right; margin:auto;"  class="moong-yellow">수정하기</button>
+
     </div>
         
 	

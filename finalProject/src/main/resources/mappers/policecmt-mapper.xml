@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="policeCmtMapper">
+
+	<resultMap type="policeCmt" id="policeCmtResultSet">
+		<result column="PC_NO" property="pc_No"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="REASON" property="reason"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="SC_NO" property="scNo"/>
+	</resultMap>
+	
+	<!-- 댓글신고 -->
+	<insert id="addPoliceCmt" parameterType="policeCmt">
+		INSERT INTO POLICE_CMT(
+						  PC_NO
+						 ,USER_NO
+						 ,REASON
+						 ,SC_NO
+						 )
+		VALUES(
+				SEQ_PCNO.NEXTVAL
+				,#{userNo}
+				,#{reason}
+				,#{scNo}
+				)
+	</insert>
+	
+	<!-- 신고삭제 -->
+	<delete id="deletePoliceCmt">
+		DELETE
+		FROM POLICE_CMT
+		WHERE PC_NO = #{pcNo}	
+	</delete>
+	
+	<!-- 신고리스트 -->
+	<select id="policeCmtListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM POLICE_CMT
+	</select>
+	
+	<!-- 신고리스트 -->
+	<select id="policeCmtList" resultMap="policeCmtResultSet">
+	    SELECT L.*, M.USER_ID AS "REPORTER", W.USER_ID AS "WRITER"
+		FROM 
+	    POLICE_CMT L
+	    JOIN MEMBER M
+	    ON L.USER_NO=M.USER_NO
+	    JOIN
+	        (SELECT P.PC_NO, M.USER_ID
+	        FROM 
+	            POLICE_CMT P
+	            JOIN SOLUTION_CMT S ON P.SC_NO=S.SC_NO
+	            JOIN MEMBER M ON S.USER_NO = M.USER_NO) W
+	    ON L.PC_NO = W.PC_NO
+	    ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<delete id="cmtDeletePolice">
+		DELETE
+		FROM POLICE_CMT
+		WHERE SC_NO = #{scNo}
+	</delete>
+	
+	<!-- 해당 user가 해당 댓글을 신고했는지 확인(0/1로 구분) -->
+	<select id="cmtPoliceCheck" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		FROM POLICE_CMT
+		WHERE SC_NO = #{scNo} AND USER_NO = #{userNo}
+	</select>
+	
+</mapper>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,10 +60,9 @@
         margin-bottom: 20px;
     }
     #idc{
-        
-        width: 500px;
-        height: 700px;
-        margin: auto;
+        width: 400px;
+    	height: 500px;
+    	margin: auto;
         margin-bottom: 10px;
         /*공란색칠*/
         background-color: orange;
@@ -105,6 +105,14 @@
         width: 600px;
     }
     
+     /*버튼 */
+	.find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
+    
 </style>
 </head>
 <body>
@@ -112,7 +120,7 @@
 	<jsp:include page="../common/header.jsp"/>
 	<jsp:include page="../common/myPageNavi.jsp"/>
 	
-
+	<br><br>
  	<div id="alarm-outer">
         <div id="subtit">
             선생님 MyPage
@@ -121,17 +129,22 @@
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
-                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
+                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;"  ><img style="height:200px; width:150px;" src="${idPicture.ipSysName }"></td>
                         <td>이름 : </td>
-                        <td>나선생</td>
+                        <td>${loginUser.userName }</td>
                     </tr>
                     <tr>
                         <td>나이 : </td>
-                        <td>20</td>
+                        <td>${age}세</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
+                        <c:if test="${loginUser.gender eq 'M' }">
                         <td>남</td>
+                        </c:if>
+                        <c:if test="${loginUser.gender eq 'F' }">
+                        <td>여</td>
+                        </c:if>
                     </tr>
                     <tr>
                         
@@ -140,19 +153,19 @@
                     </tr>
                     <tr>
                         <td>이메일 : </td>
-                        <td>tjdtossla12@gmail.com</td>
+                        <td>${loginUser.email }</td>
                     </tr>
                     
                 </table>
                 <div class="line"></div>
                 <table id="teacher-tb2">
                     <tr>
-                        <td>한줄자기소개 &nbsp;&nbsp;: &nbsp;&nbsp;</td>
-                        <td colspan="2">대박열심히해야겟다 </td>
+                        <td style="width:30%"> &nbsp;&nbsp;한줄자기소개 &nbsp;&nbsp;: &nbsp;&nbsp;</td>
+                        <td colspan="2" style="float: left;">${teacher.selfIntroduction }</td>
                     </tr>
                     <tr>
                         <td>출&nbsp;&nbsp;신&nbsp;&nbsp;학&nbsp;&nbsp;교&nbsp; : </td>
-                        <td style="float: left;">xx대학교    </td>
+                        <td style="float: left;">${teacher.schoolInfo }</td>
                     </tr>
 
                 </table>
@@ -161,19 +174,21 @@
 
                 <div style="margin:auto; height: 800px;">
                     <div class="mid">재학 증명서</div>
-                    <div id="idc"></div>
-                    <div>첨부파일 : </div>
+                    <div id="idc"><img style="height:500px; width:400px;" src="${idCard.icSysName }"></div>
+                    <div>첨부파일 : ${idCard.icOriginName }</div>
                 </div>
 
                 <div class="line"></div>
-
-                
+		
+		<div class="find-btn">
+			<button onclick="location.href='teaUpdate.me'" style="margin:auto"class="moong-dark find-btn1">수정하기</button>
+			<button onclick="location.href='teaDelete.me'" style="margin:auto"class="moong-dark find-btn1">탈퇴하기</button>
+       		 
+       		<button onclick="location.href='pwUpdateForm.me'" style="float:right;" class="moong-yellow">비밀번호 변경</button>
+       	</div>        
 
         </div>
         
-		<button onclick="location.href='teaUpdate.me'" style="float: right; margin:auto">수정하기</button>
-		<button onclick="location.href='myPageUpdateForm.me'" style="float: right; margin:auto">공통 페이지 수정하기</button>
-		<button onclick="location.href='teaDelete.me'" style="float: right; margin:auto">탈퇴하기</button>
         
     </div>
 

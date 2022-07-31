@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,13 +96,20 @@
         width: 600px;
     }
 
+     /*버튼 */
+	.find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
     
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
 	<jsp:include page="../common/myPageNavi.jsp"/>
-	
+	<br><br>
 	<div id="alarm-outer">
         <div id="subtit">
             학생 MyPage
@@ -110,36 +118,61 @@
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
-                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
+                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" ><img style="height:200px; width:150px;" src="${idPicture.ipSysName }"></td>
                         <td>이름 : </td>
-                        <td>김학생</td>
+                        <td>${loginUser.userName }</td>
                     </tr>
                     <tr>
                         <td>학년 : </td>
-                        <td>2학년</td>
+                        <td>${student.year } 학년</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
+                        <c:if test="${loginUser.gender eq 'M' }">
                         <td>남</td>
+                        </c:if>
+                        <c:if test="${loginUser.gender eq 'F' }">
+                        <td>여</td>
+                        </c:if>
+                    </tr>
+                    <tr>
+                        <td>나이 : </td>
+                        <td>${age }세</td>
+                    </tr>
+                    <tr>
+                        <td>이메일 : </td>
+                        <td>${loginUser.email}</td>
                     </tr>
                    
                 </table>
                 <div class="line"></div>
                 <table id="teacher-tb2">
 
-                    <tr>
-                        <td>과외 가능 요일 : </td>
-                        <td style="float: left;">월,수,금</td>
-                    </tr>
 
+                    <tr>
+                         <td  align="center">국어</td>
+                         <td>${student.ko }등급</td>
+                    </tr>
+                    <tr>
+                         <td  align="center">수학</td>
+                    	 <td>${student.math }등급</td>
+                    </tr>
+					<tr>
+                         <td  align="center">영어</td>
+                    	 <td>${student.eng }등급</td>	
+                    </tr>
                 </table>
 
                 <div class="line"></div>
+        <div class="find-btn">
                 
+			<button onclick="location.href='stuUpdate.me'" style="margin:auto"class="moong-dark find-btn1">수정하기</button>
+			<button onclick="location.href='stuDelete.me'" style="margin:auto"class="moong-dark find-btn1">탈퇴하기</button>
+        
+       		<button onclick="location.href='pwUpdateForm.me'" style="float:right;" class="moong-yellow">비밀번호 변경</button>
         </div>
-		<button onclick="location.href='stuUpdate.me'" style="float: right; margin:auto">수정하기</button>
-		<button onclick="location.href='myPageUpdateForm.me'" style="float: right; margin:auto">공통 페이지 수정하기</button>
-		<button onclick="location.href='stuDelete.me'" style="float: right; margin:auto">탈퇴하기</button>
+        
+        </div>
     </div>
         
 	

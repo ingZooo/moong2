@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.qna.model.vo.QnaFile;
+import com.kh.moong.qna.model.vo.QnaQuestion;
 import com.kh.moong.solution.model.dao.SolutionDao;
 import com.kh.moong.solution.model.vo.Solution;
 import com.kh.moong.solution.model.vo.SolutionCmt;
+import com.kh.moong.solution.model.vo.SolutionCmtFiles;
 import com.kh.moong.solution.model.vo.SolutionFiles;
 import com.kh.moong.solution.model.vo.SolutionHeart;
 
@@ -21,6 +24,11 @@ public class SolutionServiceImpl implements SolutionService {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+	@Override
+	public ArrayList<String> selectTags(){
+		return solutionDao.selectTags(sqlSession);
+	};
 
 	@Override
 	public int selectListCount() {
@@ -28,8 +36,9 @@ public class SolutionServiceImpl implements SolutionService {
 	}
 
 	@Override
-	public ArrayList<Solution> listAll(PageInfo pi) {
-		return solutionDao.listAll(sqlSession,pi);
+	public ArrayList<Solution> listAll(PageInfo pi, String search_cat, String keyword, String subject, String tag) {
+		ArrayList<Solution>list = solutionDao.listAll(sqlSession, pi, search_cat, keyword, subject, tag);
+		return list;
 	}
 
 	@Override
@@ -51,70 +60,108 @@ public class SolutionServiceImpl implements SolutionService {
 	public int deleteSolution(int solutionNo) {
 		return solutionDao.deleteSolution(sqlSession, solutionNo);
 	}
-
-	@Override
-	public int updateBoard(Solution b) {
-		return 0;
-	}
 	
-	//게시글 파일첨부
-	@Override
-	public int insertSolutionFiles(SolutionFiles sf) {
-		return solutionDao.insertSolutionFiles(sqlSession, sf);
-	}
-	
-	//댓글 리스트 조회
 	@Override
 	public ArrayList<SolutionCmt> cmtListAll(int solutionNo) {
 		return solutionDao.cmtListAll(sqlSession,solutionNo);
 	}
 	
-	//댓글작성
 	@Override
 	public int insertCmt(SolutionCmt sc) {
 		return solutionDao.insertCmt(sqlSession,sc);
 	}
 	
-	//제목으로 검색
 	@Override
-	public ArrayList<Solution> searchTitle(String keyword) {
-		return solutionDao.searchTitle(sqlSession,keyword);
+	public int insertSolCmtFiles(SolutionCmtFiles scf) {
+		return solutionDao.insertSolCmtFiles(sqlSession, scf);
 	}
 	
-	//내용으로 검색
 	@Override
-	public ArrayList<Solution> searchContents(String keyword) {
-		return solutionDao.searchContents(sqlSession,keyword);
+	public int deleteCmt(int scNo) {
+		return solutionDao.deleteCmt(sqlSession, scNo);
 	}
 	
-	//아이디로 검색
 	@Override
-	public ArrayList<Solution> searchId(String keyword) {
-		return solutionDao.searchId(sqlSession,keyword);
+	public SolutionCmt cmtSelctSn(int scNo) {
+		return solutionDao.cmtSelctSn(sqlSession,scNo);
 	}
 	
-	//추천하기
 	@Override
 	public int sHeartInsert(SolutionHeart sh) {
 		return solutionDao.sHeartInsert(sqlSession,sh);
 	}
 	
-	//추천취소
+
 	@Override
 	public int sHeartDelete(SolutionHeart sh) {
 		return solutionDao.sHeartDelete(sqlSession,sh);
 	}
 	
-	//추천수
 	@Override
-	public int sHeartCount(int solutionNo) {
-		return solutionDao.sHeartCount(sqlSession,solutionNo);
+	public int sHeartCount(int solution_no) {
+		return solutionDao.sHeartCount(sqlSession,solution_no);
 	}
 	
-	//user가 해당 게시물을 추천했는지 확인
 	@Override
-	public int sHeartCheck(SolutionHeart sh) {
-		return solutionDao.sHeartCheck(sqlSession,sh);
+	public int sHeartCheck(int solution_no, int user_no) {
+		return solutionDao.sHeartCheck(sqlSession, solution_no, user_no);
 	}
+	
+	@Override
+	public int getScNo() {
+		return solutionDao.getScNo(sqlSession);
+	}
+	
+	@Override
+	public int insertSolutionFiles(SolutionFiles sf) {
+		return solutionDao.insertSolutionFiles(sqlSession, sf);
+	}
+	
+	@Override
+	public int updateSolutionNo(Solution s) {
+		return solutionDao.updateSolutionNo(sqlSession,s);
+	}
+	
+	@Override
+	public int updateSolution(Solution s) {
+		return solutionDao.updateSolution(sqlSession,s);
+	}
+	
+	@Override
+	public ArrayList<String> selectTag() {
+		return solutionDao.selectTag(sqlSession);
+	}
+	
+	@Override
+	public ArrayList<Solution> teacherSolution(String subject) {
+		return solutionDao.teacherSolution(sqlSession,subject);
+	}
+
+	@Override
+	public ArrayList<Solution> studentSolution(Solution s2) {
+		ArrayList<Solution>list = solutionDao.studentSolution(sqlSession, s2);
+		return list;
+	}
+	
+	@Override
+	public int solDeletePolice(int solutionNo) {
+		return solutionDao.solDeletePolice(sqlSession, solutionNo);
+	}
+	
+	@Override
+	public int cmtDeletePolice(int scNo) {
+		return solutionDao.cmtDeletePolice(sqlSession, scNo);
+	}
+	
+	@Override
+	public int solPoliceCheck(int solution_no, int user_no) {
+		return solutionDao.solPoliceCheck(sqlSession, solution_no, user_no);
+	}
+	
+	@Override
+	public int cmtPoliceCheck(int sc_no, int user_no) {
+		return solutionDao.cmtPoliceCheck(sqlSession, sc_no, user_no);
+	}
+
 	
 }

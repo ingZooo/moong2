@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,36 +110,41 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	<jsp:include page="../common/myPageNavi.jsp"/>
 	
+	<br><br>
 	 <div id="alarm-outer">
         <div id="subtit">
-            MyPage
+            MyPage 
         </div>
         
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
-                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
                         <td>이름 : </td>
-                        <td>나회원</td>
+                        <td>${loginUser.userName }</td>
                     </tr>
                     <tr>
-                        <td>나이 : </td>
-                        <td>20</td>
+                        <td>나이 :  </td>
+                        <td>${age }세</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
+                        <c:if test="${loginUser.gender eq 'M' }">
                         <td>남</td>
+                        </c:if>
+                        <c:if test="${loginUser.gender eq 'F' }">
+                        <td>여</td>
+                        </c:if>
                     </tr>
                     <tr>
                         <td>이메일 : </td>
-                        <td>tjdtossla12@gmail.com</td>
+                        <td>${loginUser.email}</td>
                     </tr>
                    
                 </table>
                 <div class="line"></div>
                 <div class="mid"></div>
+   				<c:if test="${loginUser.approval eq 'D' || (loginUser.teacher eq 'N' && loginUser.student eq 'N')}">
                 <table id="teacher-tb2">
                     <tr>
                         <th><a href="stuEnrollForm.me"><i class="fa-solid fa-graduation-cap fa-4x"></i></a></th>
@@ -149,11 +155,12 @@
                         <td>선생님</td>
                     </tr>                    
                 </table>
-
                 <div class="line"></div>
+				</c:if>
 
                 
-
+ 
+ 
         </div>
         
 

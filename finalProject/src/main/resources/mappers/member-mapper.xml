@@ -21,7 +21,7 @@
 	
 	<!-- 로그인 -->
 	<select id="loginMember" resultMap="memberResultSet">
-		SELECT SEQ_MNO.NEXTVAL
+		SELECT USER_NO
 				,STUDENT
 				,TEACHER
 				,USER_ID
@@ -47,7 +47,8 @@
 						USER_NAME,
 						GENDER,
 						EMAIL,
-						BIRTH
+						BIRTH,
+						STATUS
 					)
 				VALUES(
 					SEQ_MNO.NEXTVAL,
@@ -56,8 +57,15 @@
 					#{userName},
 					#{gender},
 					#{email},
-					#{birth}
+					#{birth},
+					'Y'
 				)
 	</insert>
 
+	<!-- 아이디 중복 체크 -->
+<!-- 	<select id="idOk" resultType="_int"> -->
+<!-- 		SELECT COUNT(*) -->
+<!-- 	  	FROM MEMBER -->
+<!-- 	  	WHERE USER_ID = #{userId} -->
+<!-- 	</select> -->
 </mapper>

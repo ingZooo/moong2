@@ -1,222 +1,217 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 
-    <style>
-        @font-face {
-            font-family: '양진체';
-            src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        * {
-            font-family: '양진체';
-        }
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<!--font Awesome-->
+<script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script>
 
-        .title { /*제목 영역*/
-            margin-top: 7%;
-        }
+<link rel="stylesheet" href="${path}/resources/css/memberEnrollForm.css">
 
-        h2 { /*제목*/
-            height: 80px;
-            text-align: center; 
-        }
+<title>회원가입</title>
 
-        .must_icon { /*별표 아이콘*/
-            color: red;
-        }
-
-        .must_insert { /*필수입력사항*/
-            text-align: right;
-            margin-right: 25%;
-            font-size: 12px;
-        }
-
-        .hr1 { /*가로선*/
-            width: 50%;
-            height: 3px;
-            border: none;
-            background-color: rgb(43, 43, 43);
-        }
-
-        .table {
-            margin: auto;
-        }
-
-        /* select { select css
-            font-size: 13px;
-            width: 100px; 
-            height: 40px;
-            padding: .8em .5em; 
-            border: 1px solid #999;
-            font-family: inherit;  
-            background: url('../images/arrow.jpg') no-repeat 95% 50%; 
-            border-radius: 0px; 
-            -webkit-appearance: none; 
-            -moz-appearance: none;
-            appearance: none;
-            text-align: left;
-        } */
-
-        input[type=text] { /*input*/
-            border: 0;
-        }
-
-        input::placeholder { /*input 글자*/
-            font-size: 13px;
-            color: rgba(0, 0, 0, 0.247);
-        }
-
-        .id_btn { /*중복확인 버튼*/
-            background-color: rgba(0, 0, 0, 0);
-            color: rgb(251, 176, 76);
-            border: 2px solid rgb(251, 176, 76);
-            border-radius: 5px;
-            width: 110px;
-            height: 30px;
-            font-size: 13px;
-            letter-spacing: 2px;
-        }
-        .id_btn:hover {
-            color: rgb(248, 238, 225);
-            background-color:rgb(251, 176, 76);;
-        }
-
-        .email_btn { /*인증번호 버튼*/
-            background-color: rgba(0, 0, 0, 0);
-            color: rgb(251, 176, 76);
-            border: 2px solid rgb(251, 176, 76);
-            border-radius: 5px;
-            width: 110px;
-            height: 30px;
-            font-size: 13px;
-            letter-spacing: 2px;
-        }
-        .email_btn:hover {
-            color: rgb(248, 238, 225);
-            background-color:rgb(251, 176, 76);;
-        }
-        
-        .enroll {
-            text-align: center;
-        }
-
-        .enroll_btn { /*회원가입 버튼*/
-            background-color: rgba(0, 0, 0, 0);
-            color: rgb(251, 176, 76);
-            border: 2px solid rgb(251, 176, 76);
-            border-radius: 15px;
-            width: 150px;
-            height: 50px;
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        .enroll_btn:hover {
-            color: rgb(248, 238, 225);
-            background-color:rgb(251, 176, 76);
-        }
-        
-        td {
-            height: 35px;
-        }
-
-        .join_wrap { /*전체 div*/
-            min-height: calc(100vh - 57px);
-        }
-        
-        footer { /*푸터*/
-            height: 57px;
-        }
-        </style>
-
-    <title>회원가입</title>
 </head>
 <body>
-    <div id="menubar"></div>
+    <jsp:include page="../common/header.jsp"/>
 
-    <div class="title"><h2>Welcome Moong</h2></div>
-    <p class="must_insert"><span class="must_icon">*</span> 필수입력사항</p>
-    <hr class="hr1">
-    <p style="text-align: center; font-size: 23px; letter-spacing: 5px;">회원가입</p>
+    <div class="title"><h2>J&nbsp; o&nbsp; i&nbsp; n&nbsp;&nbsp;&nbsp;&nbsp; M&nbsp;o&nbsp;o&nbsp;n&nbsp;g</h2></div>
+    <!-- <hr class="hr1"> -->
+    <!-- <p style="text-align: center; font-size: 23px; letter-spacing: 5px;">회원가입</p> -->
     <div class="join_wrap">
-
-		<br><br><br>
-
+        <br>
+        <p class="must_insert"><span class="must_icon">*</span> 필수 입력사항</p>
 		<form action="insert.me" method="post">
             <div>
 	        <table class="table" style="width: 800px; padding-top: 0;">
 	            <tbody>
 	                <tr>
-	                    <td><span class="must_icon">*</span> 아이디</td>
-	                    <td><input type="text" name="userId" required placeholder="5자 이상의 영문과 숫자를 조합"></td>
-	                    <td></td>
-	                    <td><button class="id_btn">중복확인</button></td>
+	                    <td><span class="must_icon">*</span> <label for="id">아이디</label></td>
+	                    <td colspan="2">
+	                    	<input type="text" id="id" name="userId" required placeholder="5~20자 영문 소문자와 숫자로만 입력하세요 " style="width:380px;" maxlength="20">
+	                    </td>
 	                </tr>
-	                <tr></tr>
+	                <tr id="chkArea">
+	                	<td></td>
+	                	<td colspan="2">
+	                		<span id="check"></span>
+	                	</td>
+	                </tr>
 	                <tr>
-	                    <td><span class="must_icon">*</span> 비밀번호</td>
-	                    <td><input type="password" name="userPwd" required placeholder="비밀번호 입력"></td>
-	                    <td></td>
-	                    <td></td>
+	                    <td><span class="must_icon">*</span> <label for="pw">비밀번호</label></td>
+	                    <td colspan="2">
+	                    	<input type="password" id="pw" name="userPwd" required placeholder="8~15자 영문 대/소문자와 숫자, 특수문자를 포함하여 입력하세요" style="width:380px;" maxlength="15">
+	                    </td>
 	                </tr>
-	                <tr></tr>
+	                <tr id="chkArea2">
+	                	<td></td>
+	                	<td colspan="2">
+	                		<span id="check2"></span>
+	                	</td>
+	                </tr>
 	                <tr>
-	                    <td><span class="must_icon">*</span> 비밀번호확인</td>
-	                    <td><input type="password" name="userPwd" required placeholder="한 번 더 입력해주세요"></td>
-	                    <td></td>
-	                    <td></td>
+	                    <td><span class="must_icon">*</span> <label for="rpw">비밀번호 재확인</label></td>
+	                    <td colspan="2">
+	                    	<input type="password" id="rpw" name="checkPwd" required placeholder="비밀번호를 한 번 더 입력하세요" maxlength="15" style="width:380px;" maxlength="15">
+	                    </td>
 	                </tr>
-	                <tr></tr>
+	                <tr id="chkArea3">
+	                	<td></td>
+	                	<td colspan="2">
+	                		<span id="check3"></span>
+	                	</td>
+	                </tr>
 	                <tr>
-	                    <td><span class="must_icon">*</span> 이름</td>
-	                    <td><input type="text" name="userName" required placeholder="이름을 입력하세요"></td>
-	                    <td></td>
-	                    <td></td>
+	                    <td><span class="must_icon">*</span> <label for="name">이름</label></td>
+	                    <td colspan="2">
+	                    	<input type="text" id="name" name="userName" required placeholder="이름을 입력하세요" style="width:380px;">
+	                    </td>
 	                </tr>
-	                <tr></tr>
 	                <tr>
 	                    <td><span class="must_icon">*</span> 성별</td>
-	                    <td>
-	                        <input type="radio" id="Male" name="gender" value="M" required>남자
-	                        <input type="radio" id="Female" name="gender" value="F" style="margin-left: 30px;">여자
+	                    <td colspan="2" id="genderTd">
+	                        <input type="radio" id="Male" name="gender" value="M" required>
+	                    	<label for="Male">남자</label>
+	                        <input type="radio" id="Female" name="gender" value="F" style="margin-left: 30px;">
+	                        <label for="Female">여자</label>
 	                    </td>
-	                    <td></td>
-	                    <td></td>
 	                </tr>
-	                <tr></tr>
 	                <tr>
-	                    <td><span class="must_icon">*</span> 이메일</td>
-	                    <td><input type="text" name="email" required placeholder="이메일을 입력해주세요"></td>
-	                    <td></td>
-	                    <td><button class="email_btn">인증번호 받기</button></td>
+	                    <td><span class="must_icon">*</span> <label for="email">이메일</label></td>
+	                    <td>
+	                    	<input type="email" id="email" name="email" required placeholder="이메일을 입력하세요" style="width:380px;">
+	                    </td>
+	                    <td>
+	                    	<button class="email_btn">인증번호 받기</button>
+	                    </td>
 	                </tr>
-	                <tr></tr>
 	                <tr>
-	                    <td><span class="must_icon">*</span> 휴대폰</td>
-	                    <td><input type="text" name="phone" required placeholder="숫자만 입력해주세요"></td>
-	                    <td></td>
-	                    <td></td>
+	                    <td><span class="must_icon">*</span> <label for="phone">휴대전화</label></td>
+	                    <td colspan="2">
+	                    	<input type="text" id="phone" name="phone" required placeholder="'-'를 제외한 숫자만 입력하세요" style="width:380px;">
+	                    </td>
 	                </tr>
-	                <tr></tr>
 	                <tr>
-	                    <td><span class="must_icon">*</span> 생년월일</td>
-	                    <td><input type="date" name="birth" required placeholder="ex) 20060101"></td>
-	                    <td></td>
-	                    <td></td>
+	                    <td><span class="must_icon">*</span> <label for="birth">생년월일</label></td>
+	                    <td colspan="2">
+	                    	<input type="date" id="birth" name="birth" required style="width:150px;">
+	                    </td>
 	                </tr>
 	            </tbody>
 	        </table> 
+        	</div>
+	        <br>
             <div class="enroll">
-                <button type="submit" class="enroll_btn">회원가입</button>
+                <button type="submit" class="enroll_btn" disabled>회원가입</button>
             </div>
-        </div>
 		</form>
+		
+		<script>
+// 			$(function(){
+// 				// -------- 아이디 유효성 체크 및 중복 확인 -------- //
+// 				const $idchk = $("#id"); // 입력한 아이디
+				
+// 				$idchk.keyup(function(){
+// 					var idReg = /^(?=.*[a-z0-9])[a-z0-9]{5,20}$/;
+					
+// 					if($idchk.val().length >= 5){
+// 						$.ajax({
+// 							url: "idCheck.me",
+// 							data: { 
+// 								checkId: $idchk.val()
+// 							},
+// 							success: function(e){
+// 								if(e == "NOPE"){  // 입력한 아이디값이 DB에 저장된 아이디와 일치하여 'NOPE'이 반환된 경우
+// 									$("#chkArea,#check").show();
+// 									$("#check").css("color", "red").text("이미 사용중이거나 탈퇴한 아이디입니다.");
+// 								} else if(!idReg.test($idchk.val())){  // 아이디 정규식과 입력한 아이디값이 일치하지 않을 때
+// 									$("#chkArea,#check").show();
+// 									$("#check").css("color", "red").text("5~20자 영문 소문자와 숫자로만 입력하세요.");
+// 								} else if(e == "YEAH") {  // 입력한 아이디값이 DB에 저장된 아이디와 일치하는 것이 없어 'YEAH'가 반환된 경우
+// 									$("#chkArea,#check").show();
+// 									$("#check").css("color", "rgb(251, 176, 76)").text("사용 가능한 아이디입니다.");
+// 								}
+// 							},
+// 							error: function(){
+// 								console.log("ajax 통신 실패");
+// 							}
+// 						});
+// 					} else {  // 입력한 아이디값의 길이가 5글자 미만일 때
+// 						$("#chkArea").hide();
+// 					}
+// 				});
+				
+// 				// -------- 비밀번호 유효성 체크 -------- //
+// 				$("#pw").keyup(function(){  // 비밀번호 input에 문자가 입력될 때마다 chkPwd() 실행
+// 					chkPwd($("#pw").val(), $("#id").val());
+// 				});
+// 				function chkPwd(pwd, id){
+// 					var pwdReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*])(?=.*[0-9])[A-Za-z0-9!@#$%^*]{8,15}$/;
+// 					var chkNum = pwd.search(/[0-9]/g);
+// 					var chkEng = pwd.search(/[a-z]/ig);
+					
+// 					// 비밀번호 입력란이 비어있을 때
+// 					if($("#pw").val().length == 0){
+// 						$("#chkArea2,#check2").hide();
+// 					}
+// 					// 비밀번호 정규식과 일치하지 않을 때
+// 					if(!pwdReg.test(pwd)){
+// 						$("#chkArea2,#check2").show();
+// 						$("#check2").css("color","red").text("8~15자 영문 대/소문자와 숫자, 특수문자(!, @, #, $, %, ^, *)만 입력하세요.");
+// 					}
+// 					// 숫자와 영문자를 문자열 내의 모든 패턴에서 찾을 때(영문자는 대소문자 가리지 않고 비교)
+// 					if(chkNum < 0 || chkEng < 0){
+// 						$("#chkArea2,#check2").show();
+// 						$("#check2").css("color","red").text("영문자와 숫자를 모두 사용하세요.");
+// 					}
+// 					// 영문자와 숫자를 연속 3번 이상 사용했을 때
+// 					if(/(\w)\1\1/.test(pwd)){
+// 						$("#chkArea2,#check2").show();
+// 						$("#check2").css("color","red").text("비밀번호에 같은 문자를 3번 이상 사용할 수 없습니다.");
+// 					}
+// 					// 입력한 비밀번호값에서 입력한 아이디값과 일치하는 시작인덱스값이 있을 때
+// 					if(pwd.search(id) > -1){
+// 						$("#chkArea2,#check2").show();
+// 						$("#check2").css("color","red").text("비밀번호에 아이디를 포함할 수 없습니다.");
+// 					}
+// 					// 비밀번호 정규식과 일치할 때
+// 					if(pwdReg.test(pwd)){
+// 						$("#chkArea2,#check2").hide();
+// 					}
+// 				}
+				
+// 				// -------- 비밀번호 일치 여부 -------- //
+// 				$("#rpw").keyup(function(){
+// 					if($("#rpw").val().length >= 1){
+// 						if($("#pw").val() != $("#rpw").val()){  // 입력한 비밀번호값과 비밀번호 재확인값이 같지 않을 때
+// 							$("#chkArea3,#check3").show();
+// 							$("#check3").css("color","red").text("비밀번호가 일치하지 않습니다.");
+// 							$(".enroll_btn").prop("disabled",true);
+// 						} else {  // 각 값이 같을 때
+// 							$("#chkArea3,#check3").show();
+// 							$("#check3").css("color","rgb(251, 176, 76)").text("비밀번호가 일치합니다.");
+// 							$(".enroll_btn").prop("disabled",false);
+// 						}
+// 					} else {  // 입력한 비밀번호 재확인값의 길이가 8글자 미만일 때
+// 						$("#chkArea3").hide();
+// 					}
+// 				});
+// 			});
+		</script>
+		
+		
         <!-- <table class="table" style="width: 500px;">
             <tbody>
                 <tr>
@@ -283,7 +278,6 @@
                 </tr>
             </tbody>
         </table>
-
         <table class="table" style="width: 500px;">
             <tbody>
                 <tr>
@@ -298,11 +292,6 @@
                 </tr>
             </tbody>
         </table> -->
-        
-
-        
     </div>
-    
-    <div id="footer"></div>
 </body>
 </html>

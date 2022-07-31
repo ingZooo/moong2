@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardReportMapper">
+
+	<resultMap type="boardReport" id="boardReportResultSet">
+		<result column="BR_NO" property="brNo"/>
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="REPORT_DATE" property="reportDate"/>
+		<result column="REASON" property="reason"/>
+	</resultMap>
+
+	<insert id="boardReport" parameterType="report">
+		INSERT INTO BOARD_REPORT(
+								BR_NO
+							   ,BOARD_NO
+							   ,USER_NO
+							   ,REPORT_DATE
+							   ,REASON)
+		VALUES(
+				SEQ_BRNO.NEXTVAL
+			   ,#{boardNo}
+			   ,#{userNo}
+			   ,#{reportDate}
+			   ,#{reason})
+	</insert>
+	
+	<delete id="deleteReport">
+		DELETE
+		FROM BOARD_REPORT
+		WHERE BR_NO = #{brNo}
+	</delete>
+
+
+
+
+
+
+</mapper>

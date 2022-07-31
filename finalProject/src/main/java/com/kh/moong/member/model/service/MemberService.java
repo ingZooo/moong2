@@ -11,6 +11,7 @@ public interface MemberService {
 	//int updateMember(Member m);
 		
 	//int deleteMember(String userId);
-		
-	int idCheck(String chkId);
+	
+	// 아이디 중복 체크
+//	int idCheck(String chkId);
 }

@@ -1,8 +1,100 @@
-<!-- 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper 
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE STATUS = 'Y'
+	</select>
+
+	<resultMap type="board" id="boardResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="COUNT" property="count"/>
+		<result column="LIKE_COUNT" property="likeCount"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="BF_ORIGINNAME" property="bfOriginname"/>
+		<result column="BF_SYSNAME" property="bfSysname"/>
+		<result column="R_NO" property="rNo"/>
+		<result column="BR_DATE" property="brDate"/>
+	</resultMap>
+
+	<select id="selectList" resultMap="boardResultSet">
+		SELECT BOARD_NO,
+				USER_ID,
+				CATEGORY_NO,
+				TITLE,
+				CONTENT,
+				COUNT,
+				ENROLL_DATE
+		FROM BOARD
+		WHERE STATUS='Y'
+		ORDER BY ENROLL_DATE DESC	
+	</select>
+	
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO BOARD(
+						  BOARD_NO
+						 ,USER_ID
+						 ,CATEGORY_NO
+						 ,TITLE
+						 ,CONTENT
+						 ,BF_ORIGINNAME
+						 ,BF_SYSNAME
+						 )
+		VALUES(
+				SEQ_BNO.NEXTVAL
+				,#{userId}
+				,#{categoryNo}
+				,#{title}
+				,#{content}
+				,#{bfOriginname}
+				,#{bfSysname}
+				)
+	
+	</insert>
+	
+	<update id="increaseCount" parameterType="_int">
+		UPDATE BOARD
+		SET COUNT = COUNT + 1
+		WHERE STATUS = 'Y'
+		AND BOARD_NO = #{boardNo}
+	</update>
+	
+	<select id="selectBoard" resultMap="boardResultSet">
+		SELECT BOARD_NO
+			  ,TITLE
+			  ,USER_ID
+			  ,CONTENT
+			  ,CATEGORY_NO
+			  <!-- ,LIKE_COUNT -->
+			  ,ENROLL_DATE
+			  <!-- ,BF_ORIGINNAME
+			  ,BF_SYSNAME -->
+		FROM BOARD
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE BOARD
+		SET STATUS='N'
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateBoard" parameterType="board">
+		UPDATE BOARD
+			SET TITLE = #{title}
+			,CONTENT = #{content}
+			,BF_ORIGINNAME = #{bfOriginname}
+			,BF_SYSNAME = #{bfSysname}
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	
 </mapper>
- -->

@@ -187,6 +187,7 @@
 		    <version>1.18.12</version>
 		    <scope>provided</scope>
 		</dependency>
+
 		
 		<!--  spring security 라이브러리 -->
 		<dependency>

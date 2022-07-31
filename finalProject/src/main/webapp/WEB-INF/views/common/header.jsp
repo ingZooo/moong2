@@ -10,10 +10,8 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${path}/resources/css/jquery.fullpage.min.css">
    
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="${path}/resources/js/jquery.fullpage.min.js"></script>
-    
-    
     
     <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -49,17 +47,24 @@
 
     /*메뉴바 백그라운드컬러*/
     #menubar{
-        background-color:  rgb(49, 48, 47);
-        
+        background-color:  rgb(49, 48, 47);    
     }
     /*메뉴바 글씨색*/
     .nav-link{
-        
         color: rgb(248, 238, 225);
     }
     .nav-link:hover{
-        
         color: rgb(254, 132, 114);
+        transition: 0.7s;
+    }
+    .dropdown-menu{
+    	background-color:  rgb(49, 48, 47);  
+    }
+    .dropdown-item{
+    	color: rgb(248, 238, 225);
+    }
+    .dropdown-item{
+    	
         transition: 0.7s;
     }
     #logo{
@@ -95,11 +100,18 @@ header nav ul li{
 </head>
 
 <body>
-	<header>
+<c:if test="${not empty alertMsg}">
+	<script>
+		alert("${alertMsg}");
+	</script>
+	<c:remove var="alertMsg" scope="session"/>	
+</c:if>
+
+<header>
         <nav>
             <nav class="navbar navbar-expand-sm" id="menubar">
                 <!-- Brand -->
-                <img src="${path}/resources/img/logo-dark.png" id="logo-img" > <a class="navbar-brand" href="#" id="logo">뭉과외</a>
+                <img src="${path}/resources/img/logo-dark.png" id="logo-img" > <a class="navbar-brand" href="${path}" id="logo">뭉과외</a>
               
                 <!-- Links -->
                 <ul class="navbar-nav">
@@ -113,12 +125,21 @@ header nav ul li{
                     <a class="nav-link" href="list.le?userNo=1">과외 등록</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">자유 게시판</a>
+                    <a class="nav-link" href="list.bo">자유 게시판</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">관리자 페이지</a>
+                        <div class="dropdown-menu">
+					      <a class="dropdown-item" href="#">회원승인</a>
+					      <a class="dropdown-item" href="#">회원리스트</a>
+					      <a class="dropdown-item" href="list.po">신고리스트</a>
+					      <a class="dropdown-item" href="#">QnA</a>
+					      <a class="dropdown-item" href="chart.ch">차트</a>
+					    </div>
                   </li>
                 </ul>
-
-         
-                 
+                
+                
                 <c:choose>
                 	<c:when test="${empty loginUser }">
 		                <!--로그인 전-->
@@ -139,14 +160,14 @@ header nav ul li{
 		                    <ul class="navbar-nav">      
 		                     
 		                        <li class="nav-item">            
-		                            <a class="nav-link" href="#" style="pointer-events: none;">${loginUser.userName }님 환영합니다</a>     
+		                            <a class="nav-link" href="#" style="pointer-events: none;">${loginUser.userName}님 환영합니다</a>     
 		                       </li>            
 		                       <li class="nav-item">  
 		                            <!-- 체크할 메세지 or 알람이 있다면 fa-check 표시-->          
 		                            <a class="nav-link" href="#"> <i class="fa-solid fa-check" style="color:red;">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림 </i>  </a>
 		                       </li>
 		                        <li class="nav-item">            
-		                            <a class="nav-link" href="#"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
+		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
 		                       </li>
 		                       <li class="nav-item">            
 		                        <a class="nav-link" href="myPageMain.me">마이페이지</a>
@@ -158,7 +179,6 @@ header nav ul li{
 		                </div>
                 	</c:otherwise>
                 </c:choose>
-
         </nav>
     </header>
 </body>

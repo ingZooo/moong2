@@ -23,6 +23,9 @@
 		<typeAlias type="com.kh.moong.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.moong.member.model.vo.Teacher" alias="teacher"/>
 		<typeAlias type="com.kh.moong.member.model.vo.Student" alias="student"/>
+		<typeAlias type="com.kh.moong.board.model.vo.Board" alias="board"/>
+		<typeAlias type="com.kh.moong.board.model.vo.BoardLike" alias="boardlike"/>
+		<typeAlias type="com.kh.moong.board.model.vo.BoardReply" alias="boardreply"/>
 	</typeAliases>	
 
 	<mappers>
@@ -35,6 +38,9 @@
 		<mapper resource="/mappers/qna-mapper.xml"/>
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/member-mapperLee.xml"/>
+		<mapper resource="/mappers/board-mapper.xml"/>
+		<mapper resource="/mappers/boardlike-mapper.xml"/>
+		<mapper resource="/mappers/boardreply-mapper.xml"/>
 	</mappers>
 
 </configuration>
